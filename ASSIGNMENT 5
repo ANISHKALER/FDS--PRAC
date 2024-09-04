@@ -1,0 +1,99 @@
+import math
+arr = []
+n = int(input("Enter number of students: "))
+a = n
+x = int(input("Enter the roll number to find: "))
+while n != 0:
+    m = int(input("Enter roll number of student: "))
+    arr.append(m)
+    n -= 1
+ 
+# Linear Search
+y = 0
+ans = 0
+for i in arr:
+    ans += 1
+    if i == x:
+        y = 1
+        break
+if y > 0:
+    print("student is present (Linear ).")
+else:
+    print("Student is on bunk (Linear ).")
+print("Number of times the pointer has moved: ", ans)
+ 
+# Binary Search
+arr.sort()
+cnt = 0
+i = 0
+j = a - 1
+yy = 0
+while i <= j:
+    mid = (i + j) // 2
+    if arr[mid] == x:
+        y = 1
+        cnt += 1
+        print("Student is present (Binary).")
+        break
+    elif arr[mid] < x:
+        cnt += 1
+        i = mid + 1
+    else:
+        cnt += 1
+        j = mid - 1
+if y == 0:
+    print("The student is on bunk (Binary ).")
+print("Number of times the pointer has moved: ", cnt)
+ 
+# Sentinel Search
+arr.append(x)
+i = 0
+while arr[i] != x:
+    i += 1
+if i < a:
+    print("student is present (Sentinel).")
+else:
+    print("student is on bunk(Sentinel ).")
+print("Number of times the pointer has moved: ", i)
+ 
+# Fibonacci Search
+def fibonacci_search(arr, x):
+    n = len(arr)
+    fib_m_2 = 0  # Fibonacci numbers
+    fib_m_1 = 1
+    fib_m = fib_m_1 + fib_m_2
+ 
+    while (fib_m < n):
+        fib_m_2 = fib_m_1
+        fib_m_1 = fib_m
+        fib_m = fib_m_1 + fib_m_2
+ 
+    offset = -1
+    comparisons = 0
+    while (fib_m > 1):
+        i = min(offset + fib_m_2, n - 1)
+        comparisons += 1
+        if arr[i] < x:
+            fib_m = fib_m_1
+            fib_m_1 = fib_m_2
+            fib_m_2 = fib_m - fib_m_1
+            offset = i
+        elif arr[i] > x:
+            fib_m = fib_m_2
+            fib_m_1 = fib_m_1 - fib_m_2
+            fib_m_2 = fib_m - fib_m_1
+        else:
+            return i, comparisons
+ 
+    if (fib_m_1 and offset + 1 < n and arr[offset + 1] == x):
+        return offset + 1, comparisons + 1
+ 
+    return -1, comparisons + 1
+ 
+
+index, comparisons = fibonacci_search(arr, x)
+if index != -1:
+    print(" student is present (Fibonacci).")
+else:
+    print("student is on bunk (Fibonacci Search).")
+print("Number of times the pointer has moved: ", comparisons)
