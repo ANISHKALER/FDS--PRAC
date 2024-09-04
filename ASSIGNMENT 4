@@ -1,0 +1,109 @@
+def TransposeSparseMatrix(sp_r, col, row, non_ze):
+    print("Transpose of sparse matrix:")
+    
+    tra_sp = [[0] * 3 for _ in range(non_ze + 1)]
+    colt = [0] * col
+    
+    tra_sp[0] = [col, row, non_ze]
+    
+    for i in range(1, non_ze + 1):
+        colt[sp_r[i][1]] += 1
+    
+    index = [1] * (col + 1)
+    for i in range(1, col + 1):
+        index[i] = index[i - 1] + colt[i - 1]
+    
+    for i in range(1, non_ze + 1):
+        x = index[sp_r[i][1]]
+        tra_sp[x] = [sp_r[i][1], sp_r[i][0], sp_r[i][2]]
+        index[sp_r[i][1]] += 1
+    
+    for row in tra_sp:
+        print(row)    
+
+def AddSparseMatrices(sp_r1, sp_r2):
+    row1, col1, non_ze1 = sp_r1[0]
+    row2, col2, non_ze2 = sp_r2[0]
+
+    if row1 != row2 or col1 != col2:
+        raise ValueError("Matrices must have the same dimensions for addition.")
+    
+    matrix_sum = {}
+   
+    for i in range(1, non_ze1 + 1):
+        r, c, val = sp_r1[i]
+        matrix_sum[(r, c)] = matrix_sum.get((r, c), 0) + val
+    
+    for i in range(1, non_ze2 + 1):
+        r, c, val = sp_r2[i]
+        matrix_sum[(r, c)] = matrix_sum.get((r, c), 0) + val
+    
+    result = [[row1, col1, 0]]
+    non_ze = 0
+    for (r, c), val in matrix_sum.items():
+        if val != 0:
+            result.append([r, c, val])
+            non_ze += 1
+    result[0][2] = non_ze
+    
+    return result
+
+row = int(input("Enter the number of rows: "))
+col = int(input("Enter the number of columns: "))
+sp_r1 = [[row, col, 0]] 
+sp_r2 = [[row, col, 0]]  
+non_ze1 = non_ze2 = 0
+
+print("Enter the elements of the first sparse matrix:")
+for i in range(row):
+    for j in range(col):
+        x = int(input())
+        if x != 0:
+            sp_r1.append([i, j, x])
+            non_ze1 += 1
+
+sp_r1[0][2] = non_ze1
+
+print("Enter the elements of the second sparse matrix:")
+for i in range(row):
+    for j in range(col):
+        x = int(input())
+        if x != 0:
+            sp_r2.append([i, j, x])
+            non_ze2 += 1
+
+sp_r2[0][2] = non_ze2
+
+print("Sparse Matrix 1:")
+for elem in sp_r1:
+    print(elem)
+
+print("Sparse Matrix 2:")
+for elem in sp_r2:
+    print(elem)
+
+result = AddSparseMatrices(sp_r1, sp_r2)
+print("Resultant Sparse Matrix after addition:")
+for elem in result:
+    print(elem)
+
+TransposeSparseMatrix(result, col, row, result[0][2])
+
+
+# simple transpose 
+def SimpleTranspose(sp_r):
+    trans_sp=[]
+    trans_sp.append([sp_r[0][1],sp_r[0][0],sp_r[0][2]])
+ 
+    for i in range(sp_r[0][1]):
+        for j in range(1,sp_r[0][2]+1):
+            if(sp_r[j][1]==i):
+                trans_sp.append([sp_r[j][1],sp_r[j][0],sp_r[j][2]])
+ 
+    return trans_sp
+TransposeSparseMatrix(result, col, row, result[0][2])
+z= SimpleTranspose(sp_r1)
+print("simple transpose: ")
+for elem in z :
+    print (elem)
+
