@@ -1,0 +1,37 @@
+def partition(arr, st, en):
+    pivot = arr[st]
+    i = st + 1
+    j = en
+
+    print(f"array: {arr}")
+    print(f"Pivot chosen: {pivot}")
+
+    while True:
+        
+        while i <= en and arr[i] < pivot:
+            i += 1
+       
+        while arr[j] > pivot:
+            j -= 1
+        
+        if i < j:
+            arr[i], arr[j] = arr[j], arr[i]
+            print(f"Swapped elements : {arr}")
+        else:
+            break
+    
+    arr[st], arr[j] = arr[j], arr[st]
+    return j
+
+def quicksort(arr, st, en):
+    if st < en:
+        p = partition(arr, st, en)
+        quicksort(arr, st, p - 1)
+        quicksort(arr, p + 1, en)
+
+
+arr = list(map(int, input("Enter array elements separated by spaces: ").split()))
+
+quicksort(arr, 0, len(arr) - 1)
+
+print("Sorted array:", arr)
