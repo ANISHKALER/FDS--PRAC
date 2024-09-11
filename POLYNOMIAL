@@ -1,0 +1,73 @@
+def add(p1, p2):
+    # Reverse polynomials for easy alignment
+    p1 = p1[::-1]
+    p2 = p2[::-1]
+ 
+    # Determine the maximum length
+    n1 = len(p1)
+    n2 = len(p2)
+    max_len = max(n1, n2)
+ 
+    # Initialize the result polynomial
+    p3 = [0] * max_len
+ 
+    # Add coefficients of p1
+    for i in range(n1):
+        p3[i] += p1[i]
+ 
+    # Add coefficients of p2
+    for i in range(n2):
+        p3[i] += p2[i]
+ 
+    # Reverse the result to original order
+    return p3[::-1]
+ 
+def display_polynomial(coeffs):
+    terms = []
+    degree = len(coeffs) - 1
+ 
+    for exp, coeff in enumerate(reversed(coeffs)):
+        if coeff == 0:
+            continue
+ 
+        if exp == 0:
+            term = f"{coeff}"
+        elif exp == 1:
+            term = f"{coeff}x"
+        else:
+            term = f"{coeff}x^{exp}"
+ 
+        if terms:
+            if coeff > 0:
+                term = f"+ {term}"
+            else:
+                term = f"- {abs(coeff)}x^{exp}"
+ 
+        terms.append(term)
+ 
+    polynomial = " ".join(terms)
+    return polynomial if polynomial else "0"
+ 
+def input_polynomial():
+    x = int(input("Enter the degree of polynomial: "))
+    y = int(input("Enter the number of terms in the polynomial: "))
+    p = [0] * (x + 1)
+    for _ in range(y):
+        coeff = int(input("Enter the coefficient of the term: "))
+        exp = int(input("Enter the exponent of the term: "))
+        if exp <= x:\
+            p[exp] = coeff
+        else:
+            print(f"Exponent {exp} is out of range for the degree {x}.")
+    return p
+ 
+p1 = [1,2,3,4,5,6]
+p2 = [1,2,3,4]
+ 
+# Add the polynomials
+result = add(p1, p2)
+ 
+# Display results
+print("Polynomial 1:", display_polynomial(p1))
+print("Polynomial 2:", display_polynomial(p2))
+print("Addition of polynomials:", display_polynomial(result))
